@@ -1,0 +1,225 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{hyperref} % for hyperlinks
+\usepackage{bm}       % for bold math fonts
+\usepackage{lmodern}  % for bold teletype font
+\usepackage{amsmath}  % for \hookrightarrow
+\usepackage{xcolor}   % for \textcolor
+\usepackage{listings}
+\usepackage{color,soul}
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+  numbers=left,
+  stepnumber=1,
+  showstringspaces=false,
+}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{definition}[theorem]{Definition}
+
+\title{%
+  The role of buckling in cerbral cortex folding \\
+  \large Thin Film Mechanics Research Paper}
+\author{Kenneth L  Meyer}
+\date{Spring 2025}
+
+\begin{document}
+
+\maketitle
+
+QUESTIONS:
+\begin{enumerate}
+    \item Is there a way to use half-planes to exploit the symmetry of a wrinkling problem and avoid the need to discretize an extremely large domain/use an insane number of elements?
+\end{enumerate}
+
+RUNNING TODO LIST:
+\begin{enumerate}
+    \item Identify a case that should showcase wrinkling.
+    \begin{enumerate}
+        \item Pick a case with a relatively large wavelength, so larger elements can be used
+        \item Once the case is picked, try solving the problem in 2D to reduce the number of elements in the mesh
+        \item Once force-based or pre-strain based methods are able to be used to induce wrinkling, look into thermal expansion-driven buckling.
+    \end{enumerate}
+    \item Compare and contrast finite growth theory vs. thermal expansion-based growth, try to determine which is easier to use.
+    \item Re-create the contact pressure plots but with an ACCURATE computation of contact pressure; plot hertzian contact pressure along a line as well
+    \item Combine 2 modeling aspects together (growth and buckling, growth and contact)
+    \item Write the paper, add 'use all 3' as a next step
+    \item Try combining all 3 approaches together! (or: try modeling more complex wrinkling/buckling patterns, on 3D domains. 
+\end{enumerate}
+
+Note: requried sections according to the syllabus are: "abstract, introduction, method, results, discussions, conclusion, and references"
+
+I might have to move some of my sections around to conform to this
+\tableofcontents
+
+\section{Abstract}
+
+% literature-review esque page describing brain morphogenesis
+
+\section{Introduction}
+"Growing evi-
+dence suggests that mechanical instabilities emerging from
+differential growth between a faster growing outer gray mat-
+ter, the cortex, and a slower growing inner white matter, the
+subcortex, play a major role in brain morphogenesis" - fifty shades of brain. (make sure to mention that differential growth is the leading theory/explanation of buckling in the brain. this is corroborated by thin film mechanics theory; wrinkles occur in film-substrate systems where the substrate is more compliant than the film and the film is thus subjected to high compressive forces.
+
+\subsection{Brain Morphogenesis}
+
+\subsubsection{Buckling}
+
+\section{Methods}
+% might want to totally eliminate the 'existing modeling approaches' section and just mention what people have and haven't done in the introduction. Repeating things in the methods section doesn't make a whole lot of sense.
+\subsection{Existing Modeling Approaches}
+
+% should maybe have a section that explains analytical modeling vs. FE modeling, not totally sure if this is necessary though.
+% ^ there's totally a chance that a breakthrough might not require heavy duty mechanics, or heavy duty FEM... but we'll see.
+
+\subsubsection{Buckling and Wrinkling}\label{subsec:wrinkling_modeling}
+Thin film-substrate systems have been well-studied in recent years, with applications ranging from the semiconductor industry to brain mechanics \cite{yu_harnessing_2018, nikravesh_direct_2019, pandurangi_mechanics_2015,chen_buckling_2010, jin_mechanics_2015, huang_nonlinear_2005} (CITE A KUHL PAPER AND A SEMICONDUCTOR APPLICATION). Some researchers believed that brain morphogensis is a tension-driven \cite{essen_tension-based_1997}, but recent results have shown that tension does not drive cortical folding \cite{xu_axons_2010}. The film-substrate systems that drive cortical folding are comprised of grey and white matter (CHECK - WHICH IS FILM WHICH IS SUBSTRATE), whose different growth rates causes strain mismatch which drives cortical folding (CITE SOMETHING HERE; I BELIEVE SOMEONE HAS COME UP WITH THIS THEORY).
+
+The critical wavelength, membrane force, and amplitude for a wrinkled film in a film-substrate system with an infinitely thick substrate are described below:
+\begin{equation}\label{eqn:wavenumber_thicksubstrate}
+    \lambda_c = 2\pi h \left ( \frac{\bar{E}_f}{3 \bar{E}_s} \right ) ^{1/3}, \;
+    N_c = h \bar{E}_f \frac{1}{4} \left( \frac{3 \bar{E}_s}{\bar{E}_f} \right)^{2/3}, \;
+    A_{eq} = h \sqrt{\frac{|N^0_{11}|}{N_c} - 1}
+\end{equation}
+Note that film and substrate elastic moduli are and the film thickness is $h$. In the thin-substrate limit, energy is minimized by the wavenumber, critical force, and wave amplitude described by 
+\begin{equation}\label{eqn:wavenumber_thinsubstrate}
+    \lambda_c = 2\pi h \left ( \frac{H\bar{E}_f(1 - 2\nu_s)}{12h \bar{E}_s (1 - \nu_s)^2} \right ) ^{1/4}, \;
+    N_c = h \bar{E}_f \left( \frac{h \bar{E}_s (1 - \nu_s)^2}{3H\bar{E}_f(1 - 2\nu_s)} \right)^{1/2}, \;
+    A_{eq} = h \sqrt{\frac{2}{3}\left(\frac{|N^0_{11}|}{N_c} - 1\right)}
+\end{equation}
+
+Here is a specific parameter set that we choose to investigate:
+\begin{align}
+    h:& 0.02, H:2.0, E_s:1.0, \nu_s:0.45, E_f:10000.0, \nu_f:0.4       \\
+    \lambda_c& \text{ thick } | f_c \text{ thick } || \lambda_c \text{ thin } | f_c \text{ thin } \\
+    & 1.845 | 0.276 || 1.598 | 0.245
+\end{align}
+Here is the specific parameter set used for the PDMS substrate - film system:
+\begin{equation}
+    h=0.0001, w=0.112, D=0.056, E_s=2.97, \nu_s=0.495, E_f=7300, \nu_f=0.35
+\end{equation}
+These values correspond to a critical thick and thin wavelength of
+\begin{equation}
+    \lambda_c = 0.01118 \text{ (thin)}, \lambda_c = 0.0099 \text{ (thick)}
+\end{equation}
+
+Thermal expansion is defined as a coefficient, it is analogous to finite growth theory.
+
+\begin{equation}
+    \alpha_L = \frac{1}{L}\frac{dL}{dT}
+\end{equation}
+
+finite growth theory sees that
+\begin{equation}
+    \operatorname{det}(\bm{F}^g) = J^g = \vartheta ^ 3
+\end{equation}
+note that we also know
+\begin{equation}
+    \vartheta = \frac{L + \Delta L}{L}
+\end{equation}
+and thus we find
+\begin{equation}
+    \vartheta = 1 + \alpha_L \Delta t
+\end{equation}
+
+\subsubsection{Finite Growth Theory}
+
+Here, I'm typing some of the equations that I need to write up for the presentation tomorrow.
+
+The stress in the neohookean solid is soley due to the elastic part,
+
+\begin{equation}
+    \bm{\tau} = [\lambda \operatorname{ln} (J^e) - \mu]\bm{I} + \mu {\bm{F}^e}^T \bm{F}^e
+\end{equation}
+
+and the mechanical equilibirum equation that is solved is:
+\begin{equation}
+    \operatorname{div}\left ( \frac{1}{J} \bm{\tau} \right ) = 0
+\end{equation}
+
+Material parameters used for the finite growth simulation are
+\begin{equation}
+    E_c=2911 \text{ Pa}, \nu_c=0.458, E_s=\frac{1}{3}2911 \text{ Pa}, \nu_s=0.458
+\end{equation}
+
+
+% use this section to motivate the rest of the work in this paper
+\subsubsection{Interactions not considered}
+
+% I might want to look into combining all of these subsections into the 'proposed modeling framework' section to make the paper a bit more coherent
+\subsection{Proposed modeling framework}
+% give some nice outline of how buckling, finite growth theory, and contact mechanics can improve the existing modeling approaches out there 
+
+% this is the third section for this lol
+\subsubsection{Growth-driven buckling}
+% need to be careful about assuming, or implying, that only growth contributes to buckling.
+NOTES:
+\begin{itemize}
+    \item trying this problem in 2D first will make this much easier to address
+    \item using a mesh that has a better refinement strategy might be the move here; current strategy might be yielding elements with poor aspect ratios
+\end{itemize}
+
+\subsubsection{Contact Mechanics}
+
+% need to note that I'll be using our in-house FEM code to do all of this, so a major part of this work will simply be getting things to work!
+
+Signorini's problem can be posed as a variational inequality. We want to find $\bm{u} \in \bm{K}:$
+\begin{equation}
+    \int_{\Omega} \sigma_{ij}(\bm{u})(v_{i,j} - u_{i,j}) \, dx \geq \int_{\Omega} f_i (v_i - u_i) \, dx + \int_{\Gamma_F} t_i(v_i - u_i) \, ds \; \forall \; \bm{v} \in \bm{K}
+    
+\end{equation}
+
+\subsubsection{Computational Implementation}
+
+\subsubsection{Other Considerations or Future work}
+
+
+\section{Results}
+
+% CHECK: is wrinkling strain-mismatch driven? Need to double check that the simulations that I set up will induce wrinkling...
+\subsection{Wrinkling}
+To simulate growth differential-driven buckling of brain tissue during morphogenesis, wrinkling due to strain mismatch first needs to be captured. FE simulations of strain-mismatch (irrespective of its source) driven wrinkling of a \hl{(INSERT MATERIAL TYPE HERE)} are using to capture this phenomena. This first step in predicting wrinkling patterns during brain morphogenesis will help develop an understanding the discretization and \hl{nonlinear solution schemes} that are required to capture wrinkling.
+
+\subsubsection{Generic Film-Substrate Wrinkling}
+INSERT material parameters that are chosen here, describe the model + discretization, explain considerations for the solver
+
+show results of wrinkling here!
+
+\subsubsection{Brain Tissue Wrinkling}
+\hl{if time permits, show that we can get 'brain tissue' to wrinkle}.
+\subsection{Tissue Growth}
+
+\subsection{Contact Mechanics}
+
+% I don't know how I will compare ALL of this to any experimental data.
+% however, I might be able to incoporate the brain material model and a contact potential term to attempt to match experimental indentation tests? Would kinda be committing inverse crime though if I'm using the parameters they determined to match the experimental displacements that they recorded...
+\subsection{Comparison to Experimental Data}
+
+\section{Discussion}
+% give some summary of the project here
+
+\subsection{Limitations}
+
+
+\subsection{Future Work}
+
+\section{Conclusion}
+
+\section{Appendix}
+% not sure if I'll need to put algorithms in here or not
+\subsection{Algorithms}
+\subsection{Open-source code}
+
+
+\bibliographystyle{plain}
+\bibliography{references.bib}
+
+\end{document}
